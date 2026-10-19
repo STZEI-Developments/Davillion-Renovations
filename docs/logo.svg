@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 40" fill="none" stroke="#1D5BBF" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" role="img" aria-label="Davillion Renovations">
+  <!-- chimney -->
+  <path d="M40 14V6h6v14"/>
+  <!-- long roof line, big gable -->
+  <path d="M2 30L32 6l30 24"/>
+  <!-- small front gable -->
+  <path d="M12 30l12-10 12 10"/>
+  <!-- small window -->
+  <rect x="20.5" y="25" width="7" height="6" stroke-width="3"/>
+  <!-- eave -->
+  <path d="M6 36h52"/>
+</svg>
