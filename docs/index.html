@@ -11,6 +11,7 @@
   :root {
     --blue: #1D5BBF;
     --blue-dark: #164a9c;
+    --sky: #7CC0F5;
     --ink: #22252A;
     --muted: #5b5f66;
     --page: #F7F6F3;
@@ -18,6 +19,7 @@
     --line: #E3E1DC;
     --taupe: #6F665E;
     --taupe-soft: #ECE8E3;
+    --bounce: cubic-bezier(.34, 1.56, .64, 1);
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -47,6 +49,9 @@
   .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); font-weight: 700; }
   .brand img { width: 40px; height: 25px; }
   .brand span { white-space: nowrap; }
+  .nav { display: none; gap: 24px; margin-left: auto; margin-right: 12px; }
+  .nav a { color: var(--ink); text-decoration: none; font-size: 15px; }
+  .nav a:hover { color: var(--blue); }
   .call {
     display: inline-flex; align-items: center; gap: 8px;
     font-weight: 700; text-decoration: none; white-space: nowrap;
@@ -59,47 +64,99 @@
     padding: 14px 24px; border-radius: 6px; font-size: 17px;
   }
   .btn:hover { background: var(--blue-dark); }
-  .btn-ghost { background: transparent; color: var(--blue); box-shadow: inset 0 0 0 2px var(--blue); }
-  .btn-ghost:hover { background: var(--blue); color: #fff; }
+  .btn-light { background: transparent; color: #fff; box-shadow: inset 0 0 0 2px rgba(255,255,255,.85); }
+  .btn-light:hover { background: #fff; color: var(--ink); }
 
-  /* hero */
-  .hero { padding: 40px 0 56px; }
-  .hero .wrap { display: grid; gap: 28px; align-items: center; }
-  .hero h1 { font-size: 38px; letter-spacing: -0.5px; }
-  .hero .sub { font-size: 19px; color: var(--muted); margin-bottom: 8px; }
-  .rating { display: flex; align-items: center; gap: 8px; font-weight: 600; margin: 16px 0 24px; }
-  .stars { color: #E8A317; letter-spacing: 2px; }
-  .actions { display: flex; flex-wrap: wrap; gap: 12px; }
-  .hero img { border-radius: 8px; aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
+  /* hero: full-bleed muted video, text over a dark shade */
+  .hero {
+    position: relative; overflow: hidden; color: #fff;
+    background: #2a2b2d;
+    min-height: min(86vh, 720px);
+    display: grid; align-items: center;
+    padding: 72px 0;
+  }
+  .hero-video, .hero-shade { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .hero-video { object-fit: cover; }
+  .hero-shade { background: rgba(18, 20, 24, .58); }
+  .hero-inner { position: relative; text-align: center; }
+  .badge {
+    display: inline-block; font-size: 14px; font-weight: 600;
+    background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.3);
+    padding: 4px 12px; border-radius: 999px; margin-bottom: 18px;
+  }
+  .badge .stars { color: #F5B82E; }
+  .hero h1 { font-size: 40px; letter-spacing: -0.5px; margin-bottom: 16px; }
+  .hero h1 span { color: var(--sky); }
+  .hero .sub { font-size: 19px; color: #E6E8EB; max-width: 32em; margin: 0 auto 28px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .stats { list-style: none; padding: 0; margin: 36px 0 0; display: flex; justify-content: center; gap: 36px; }
+  .stats strong { display: block; font-size: 28px; color: var(--sky); line-height: 1.1; }
+  .stats span { font-size: 14px; color: #E6E8EB; }
 
-  /* services */
+  /* services: cards lift with a small bounce on hover */
   .cards { display: grid; gap: 20px; margin-top: 24px; }
-  .card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
-  .card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
-  .card div { padding: 18px 20px 20px; }
-  .card p { color: var(--muted); margin: 0; }
+  .card {
+    display: block; text-decoration: none; color: inherit;
+    background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden;
+    transition: transform .45s var(--bounce), box-shadow .3s ease;
+  }
+  .card:hover, .card:focus-visible { transform: translateY(-8px); box-shadow: 0 16px 32px rgba(34, 37, 42, .14); }
+  .card-img { overflow: hidden; }
+  .card-img img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; transition: transform .6s ease; }
+  .card:hover .card-img img { transform: scale(1.06); }
+  .card-body { padding: 18px 20px 20px; }
+  .card-body p { color: var(--muted); margin: 0 0 12px; }
+  .card-link { color: var(--blue); font-weight: 700; font-size: 15px; }
+  .card-link::after { content: " →"; display: inline-block; transition: transform .3s var(--bounce); }
+  .card:hover .card-link::after { transform: translateX(4px); }
   .also { margin-top: 20px; font-weight: 600; }
 
-  /* before / after */
+  /* before / after drag sliders */
   .ba { background: var(--taupe-soft); }
-  .pairs { display: grid; gap: 28px; margin-top: 24px; }
-  .pair { margin: 0; }
-  .pair .imgs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-  .pair .shot { position: relative; }
-  .pair img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 6px; }
-  .pairs { max-width: 900px; }
+  .ba-grid { display: grid; gap: 28px; margin-top: 24px; }
+  .ba-item { margin: 0; }
+  .slider {
+    --pos: 50%;
+    position: relative; aspect-ratio: 4 / 5; border-radius: 8px; overflow: hidden;
+    cursor: ew-resize; touch-action: pan-y; user-select: none; -webkit-user-select: none;
+    background: #ddd;
+  }
+  .slider img {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    pointer-events: none; -webkit-user-drag: none;
+  }
+  .slider .before { clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+  .divider {
+    position: absolute; top: 0; bottom: 0; left: var(--pos); width: 3px;
+    margin-left: -1.5px; background: #fff; box-shadow: 0 0 6px rgba(0,0,0,.25);
+    pointer-events: none;
+  }
+  .knob {
+    position: absolute; top: 50%; left: var(--pos);
+    width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%;
+    background: #fff; color: var(--blue); border: 0;
+    font: 700 12px/1 system-ui, sans-serif; letter-spacing: .5px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.25);
+    display: grid; place-items: center; cursor: ew-resize;
+    transition: transform .3s var(--bounce);
+  }
+  .slider:hover .knob, .knob:focus-visible { transform: scale(1.08); }
+  .knob:focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; }
   .tag {
-    position: absolute; left: 8px; top: 8px;
+    position: absolute; top: 10px;
     background: rgba(34, 37, 42, .85); color: #fff;
     font-size: 13px; font-weight: 700; padding: 3px 8px; border-radius: 4px;
+    pointer-events: none;
   }
-  .tag.after { background: var(--blue); }
-  .pair figcaption { margin-top: 8px; font-weight: 600; }
+  .tag.b { left: 10px; }
+  .tag.a { right: 10px; background: var(--blue); }
+  .ba-item figcaption { margin-top: 10px; font-weight: 600; }
 
   /* reviews */
   .reviews { background: var(--taupe); color: #fff; }
   .reviews .lead { color: #EDE9E4; }
   .reviews a { color: #fff; }
+  .reviews .stars { color: #F5B82E; }
   .quotes { display: grid; gap: 20px; margin-top: 24px; }
   blockquote {
     margin: 0; background: rgba(255,255,255,.08);
@@ -120,8 +177,9 @@
   }
   .steps h3 { margin-bottom: 4px; }
   .steps p { color: var(--muted); margin: 0; }
+  .prep { margin: 0; }
   .prep img { border-radius: 8px; width: 100%; max-height: 460px; object-fit: cover; }
-  .prep p { color: var(--muted); font-size: 15px; margin-top: 8px; }
+  .prep figcaption { color: var(--muted); font-size: 15px; margin-top: 8px; }
 
   /* quote form */
   .quote { background: var(--card); border-top: 1px solid var(--line); }
@@ -134,7 +192,6 @@
   input:focus, textarea:focus { outline: 3px solid rgba(29, 91, 191, .25); border-color: var(--blue); }
   textarea { min-height: 120px; resize: vertical; }
   .hp { display: none; }
-  .form-note { color: var(--muted); font-size: 15px; }
   #form-status { font-weight: 600; min-height: 1.5em; }
 
   footer { background: var(--ink); color: #d6d6d6; padding: 32px 0; font-size: 15px; }
@@ -144,10 +201,14 @@
 
   @media (min-width: 760px) {
     h2 { font-size: 34px; }
-    .hero .wrap { grid-template-columns: 1fr 1.1fr; }
-    .hero h1 { font-size: 48px; }
+    .nav { display: flex; }
+    .hero-shade { background: linear-gradient(90deg, rgba(18,20,24,.82) 0%, rgba(18,20,24,.6) 45%, rgba(18,20,24,.12) 80%); }
+    .hero-inner { text-align: left; }
+    .hero h1 { font-size: 56px; max-width: 11em; }
+    .hero .sub { margin-left: 0; }
+    .actions, .stats { justify-content: flex-start; }
     .cards { grid-template-columns: repeat(3, 1fr); }
-    .pair img { aspect-ratio: 4 / 3; }
+    .ba-grid { grid-template-columns: repeat(3, 1fr); }
     .quotes { grid-template-columns: repeat(3, 1fr); }
     .steps-grid { grid-template-columns: 1.2fr 1fr; }
   }
@@ -155,6 +216,13 @@
     .brand span { font-size: 15px; }
     .call span { display: none; }
     .call::after { content: "Call"; }
+    .hero h1 { font-size: 34px; }
+    .stats { gap: 22px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .card, .card-img img, .card-link::after, .knob { transition: none; }
+    .card:hover, .card:focus-visible, .card:hover .card-img img { transform: none; }
   }
 </style>
 </head>
@@ -163,6 +231,12 @@
 <header class="bar">
   <div class="wrap">
     <a class="brand" href="#top"><img src="logo.svg" alt=""><span>Davillion Renovations</span></a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#services">Services</a>
+      <a href="#work">Before and after</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#quote">Get a quote</a>
+    </nav>
     <a class="call" href="tel:+17808935509">
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>
       <span>(780) 893-5509</span>
@@ -173,17 +247,21 @@
 <main id="top">
 
 <section class="hero">
-  <div class="wrap">
-    <div>
-      <h1>Fresh paint, clean lines, done on time.</h1>
-      <p class="sub">Davillion Painting. Interior painting and fence staining in Edmonton.</p>
-      <div class="rating"><span class="stars" aria-hidden="true">★★★★★</span> 5.0 on Google, 17 reviews</div>
-      <div class="actions">
-        <a class="btn" href="#quote">Get a quote</a>
-        <a class="btn btn-ghost" href="tel:+17808935509">Call (780) 893-5509</a>
-      </div>
+  <video class="hero-video" muted loop playsinline preload="none" poster="video/hero-wide.jpg" aria-hidden="true"></video>
+  <div class="hero-shade"></div>
+  <div class="wrap hero-inner">
+    <p class="badge"><span class="stars" aria-hidden="true">★</span> 5.0 on Google</p>
+    <h1>Fresh paint, clean lines, <span>done on time.</span></h1>
+    <p class="sub">Davillion Painting. Interior painting and fence staining in Edmonton.</p>
+    <div class="actions">
+      <a class="btn" href="#quote">Get a quote</a>
+      <a class="btn btn-light" href="tel:+17808935509">Call (780) 893-5509</a>
     </div>
-    <img src="img/after-living-room-taupe-accent-wide.jpg" width="959" height="719" alt="Living room with a dark taupe accent wall, light grey walls and hardwood floor, freshly painted">
+    <ul class="stats">
+      <li><strong>5.0</strong><span>Google rating</span></li>
+      <li><strong>17</strong><span>Google reviews</span></li>
+      <li><strong>100%</strong><span>five-star</span></li>
+    </ul>
   </div>
 </section>
 
@@ -191,27 +269,30 @@
   <div class="wrap">
     <h2>What we paint</h2>
     <div class="cards">
-      <article class="card">
-        <img src="img/after-bedroom-pale-grey-carpet.jpg" width="959" height="719" alt="Bedroom painted pale grey with crisp white trim" loading="lazy">
-        <div>
+      <a class="card" href="#quote">
+        <div class="card-img"><img src="img/after-bedroom-pale-grey-carpet.jpg" width="959" height="719" alt="Bedroom painted pale grey with crisp white trim" loading="lazy"></div>
+        <div class="card-body">
           <h3>Interior painting</h3>
           <p>Walls, ceilings, trim and doors. One room or several.</p>
+          <span class="card-link">Get a quote</span>
         </div>
-      </article>
-      <article class="card">
-        <img src="img/2087437938288061_frame.jpg" width="679" height="1200" alt="Empty rental unit with fresh grey walls and white trim" loading="lazy">
-        <div>
+      </a>
+      <a class="card" href="#quote">
+        <div class="card-img"><img src="img/2087437938288061_frame.jpg" width="679" height="1200" alt="Empty rental unit with fresh grey walls and white trim" loading="lazy"></div>
+        <div class="card-body">
           <h3>Rentals and whole houses</h3>
           <p>Patch and repaint between tenants, or the whole house in one go.</p>
+          <span class="card-link">Get a quote</span>
         </div>
-      </article>
-      <article class="card">
-        <img src="img/361162426752289_frame.jpg" width="675" height="1200" alt="Flower and gift shop with freshly painted cream walls" loading="lazy">
-        <div>
+      </a>
+      <a class="card" href="#quote">
+        <div class="card-img"><img src="img/361162426752289_frame.jpg" width="675" height="1200" alt="Flower and gift shop with freshly painted cream walls" loading="lazy"></div>
+        <div class="card-body">
           <h3>Shops and cafes</h3>
           <p>Commercial jobs finished on schedule. Recent work: a flower shop and a cafe.</p>
+          <span class="card-link">Get a quote</span>
         </div>
-      </article>
+      </a>
     </div>
     <p class="also">Also: garages, basements and fence staining.</p>
   </div>
@@ -220,26 +301,35 @@
 <section class="ba" id="work">
   <div class="wrap">
     <h2>Before and after</h2>
-    <p class="lead">Real jobs, from our own photos.</p>
-    <div class="pairs">
-      <figure class="pair">
-        <div class="imgs">
-          <div class="shot"><span class="tag">Before</span><img src="img/before-living-room-red-wall-patched.jpg" width="959" height="721" alt="Living room before: red wall covered in filler patches" loading="lazy"></div>
-          <div class="shot"><span class="tag after">After</span><img src="img/after-living-room-taupe-accent.jpg" width="959" height="719" alt="Same living room after: taupe accent wall and light grey walls" loading="lazy"></div>
+    <p class="lead">Real jobs, from our own photos. Drag the handle to compare.</p>
+    <div class="ba-grid">
+      <figure class="ba-item">
+        <div class="slider">
+          <img class="after" src="img/after-living-room-taupe-accent.jpg" width="899" height="704" alt="Living room after: taupe accent wall and light grey walls" loading="lazy">
+          <img class="before" src="img/before-living-room-red-wall-patched.jpg" width="899" height="704" alt="Living room before: red wall covered in filler patches" loading="lazy">
+          <span class="tag b">Before</span><span class="tag a">After</span>
+          <div class="divider"></div>
+          <button class="knob" type="button" role="slider" aria-label="Living room: drag to compare before and after" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">DRAG</button>
         </div>
         <figcaption>Living room</figcaption>
       </figure>
-      <figure class="pair">
-        <div class="imgs">
-          <div class="shot"><span class="tag">Before</span><img src="img/before-garage-lime-green-ceiling.jpg" width="959" height="719" alt="Garage before: lime green walls and unfinished drywall ceiling" loading="lazy"></div>
-          <div class="shot"><span class="tag after">After</span><img src="img/after-garage-grey-tile-wainscot.jpg" width="959" height="719" alt="Same garage after: grey walls and finished ceiling above the tile" loading="lazy"></div>
+      <figure class="ba-item">
+        <div class="slider">
+          <img class="after" src="img/after-bedroom-pale-blue-grey.jpg" width="756" height="674" alt="Bedroom after: pale blue-grey walls and white trim" loading="lazy">
+          <img class="before" src="img/before-bedroom-tan-patched.jpg" width="756" height="674" alt="Bedroom before: tan walls heavily patched, plastic on the floor" loading="lazy">
+          <span class="tag b">Before</span><span class="tag a">After</span>
+          <div class="divider"></div>
+          <button class="knob" type="button" role="slider" aria-label="Bedroom: drag to compare before and after" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">DRAG</button>
         </div>
-        <figcaption>Garage</figcaption>
+        <figcaption>Bedroom</figcaption>
       </figure>
-      <figure class="pair">
-        <div class="imgs">
-          <div class="shot"><span class="tag">Before</span><img src="img/before-stairs-red-tan-patched.jpg" width="607" height="808" alt="Stairway before: red and tan walls with patches" loading="lazy"></div>
-          <div class="shot"><span class="tag after">After</span><img src="img/after-stairs-down-pale-grey.jpg" width="607" height="808" alt="Same stairway after: pale grey walls and white rail" loading="lazy"></div>
+      <figure class="ba-item">
+        <div class="slider">
+          <img class="after" src="img/after-stairs-down-pale-grey.jpg" width="437" height="808" alt="Stairway after: pale grey walls and white rail" loading="lazy">
+          <img class="before" src="img/before-stairs-red-tan-patched.jpg" width="437" height="808" alt="Stairway before: red and tan walls with patches" loading="lazy">
+          <span class="tag b">Before</span><span class="tag a">After</span>
+          <div class="divider"></div>
+          <button class="knob" type="button" role="slider" aria-label="Stairway: drag to compare before and after" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">DRAG</button>
         </div>
         <figcaption>Stairway</figcaption>
       </figure>
@@ -279,9 +369,9 @@
       </ol>
       <a class="btn" href="#quote">Get a quote</a>
     </div>
-    <figure class="prep" style="margin:0">
+    <figure class="prep">
       <img src="img/hallway-masked-for-spray.jpg" width="455" height="808" alt="Hallway fully masked in plastic and paper before painting" loading="lazy">
-      <p>Everything covered before the first coat.</p>
+      <figcaption>Everything covered before the first coat.</figcaption>
     </figure>
   </div>
 </section>
@@ -315,6 +405,46 @@
 </footer>
 
 <script>
+  // Hero video: tall cut for portrait phones, wide cut otherwise. Poster only if the visitor prefers less motion.
+  (function () {
+    var v = document.querySelector('.hero-video');
+    var tall = window.matchMedia('(max-width: 759px) and (orientation: portrait)').matches;
+    var name = tall ? 'hero-tall' : 'hero-wide';
+    v.poster = 'video/' + name + '.jpg';
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    v.src = 'video/' + name + '.mp4';
+    v.play().catch(function () {});
+  })();
+
+  // Before/after sliders: drag anywhere on the photo, or use arrow keys on the handle.
+  document.querySelectorAll('.slider').forEach(function (s) {
+    var knob = s.querySelector('.knob'), dragging = false;
+    function set(pct) {
+      pct = Math.max(0, Math.min(100, pct));
+      s.style.setProperty('--pos', pct + '%');
+      knob.setAttribute('aria-valuenow', Math.round(pct));
+    }
+    function fromEvent(e) {
+      var r = s.getBoundingClientRect();
+      set((e.clientX - r.left) / r.width * 100);
+    }
+    s.addEventListener('pointerdown', function (e) {
+      dragging = true;
+      s.setPointerCapture(e.pointerId);
+      fromEvent(e);
+    });
+    s.addEventListener('pointermove', function (e) { if (dragging) fromEvent(e); });
+    s.addEventListener('pointerup', function () { dragging = false; });
+    s.addEventListener('pointercancel', function () { dragging = false; });
+    knob.addEventListener('keydown', function (e) {
+      var now = +knob.getAttribute('aria-valuenow');
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') { set(now - 5); e.preventDefault(); }
+      if (e.key === 'ArrowRight' || e.key === 'ArrowUp') { set(now + 5); e.preventDefault(); }
+      if (e.key === 'Home') { set(0); e.preventDefault(); }
+      if (e.key === 'End') { set(100); e.preventDefault(); }
+    });
+  });
+
   // Send the form without leaving the page; plain POST still works if JS is off.
   document.getElementById('quote-form').addEventListener('submit', async function (e) {
     e.preventDefault();
