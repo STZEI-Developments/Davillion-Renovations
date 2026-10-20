@@ -52,6 +52,16 @@
   .nav { display: none; gap: 24px; margin-left: auto; margin-right: 12px; }
   .nav a { color: var(--ink); text-decoration: none; font-size: 15px; }
   .nav a:hover { color: var(--blue); }
+  /* accent underline slides in on hover (header and footer links) */
+  .nav a, .foot-links a { position: relative; }
+  .nav a::after, .foot-links a::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 2px;
+    background: var(--blue); transform: scaleX(0); transform-origin: left;
+    transition: transform .3s ease;
+  }
+  .foot-links a::after { background: var(--sky); }
+  .nav a:hover::after, .nav a:focus-visible::after,
+  .foot-links a:hover::after, .foot-links a:focus-visible::after { transform: scaleX(1); }
   .call {
     display: inline-flex; align-items: center; gap: 8px;
     font-weight: 700; text-decoration: none; white-space: nowrap;
@@ -105,11 +115,20 @@
   .card-img img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; transition: transform .6s ease; }
   .card:hover .card-img img { transform: scale(1.06); }
   .card-body { padding: 18px 20px 20px; }
-  .card-body p { color: var(--muted); margin: 0 0 12px; }
-  .card-link { color: var(--blue); font-weight: 700; font-size: 15px; }
-  .card-link::after { content: " →"; display: inline-block; transition: transform .3s var(--bounce); }
-  .card:hover .card-link::after { transform: translateX(4px); }
-  .also { margin-top: 20px; font-weight: 600; }
+  .card-body p { color: var(--muted); margin: 0; }
+  .also {
+    margin-top: 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
+    background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 16px 20px;
+  }
+  .also-label { font-weight: 700; margin-right: 4px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--taupe-soft); border-radius: 999px; padding: 8px 16px;
+    font-weight: 600; font-size: 15px;
+    transition: transform .35s var(--bounce);
+  }
+  .chip:hover { transform: translateY(-3px); }
+  .chip svg { width: 18px; height: 18px; color: var(--blue); flex: none; }
 
   /* before / after drag sliders */
   .ba { background: var(--taupe-soft); }
@@ -166,20 +185,20 @@
   blockquote cite { font-style: normal; font-weight: 700; }
 
   /* steps */
-  .steps-grid { display: grid; gap: 28px; margin-top: 24px; align-items: start; }
-  .steps { list-style: none; padding: 0; margin: 0; counter-reset: s; }
-  .steps li { counter-increment: s; position: relative; padding-left: 52px; margin-bottom: 22px; }
+  .steps { list-style: none; padding: 0; margin: 24px 0 28px; counter-reset: s; display: grid; gap: 16px; }
+  .steps li {
+    counter-increment: s; position: relative;
+    background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+    padding: 20px 20px 20px 72px;
+  }
   .steps li::before {
-    content: counter(s); position: absolute; left: 0; top: 0;
+    content: counter(s); position: absolute; left: 20px; top: 20px;
     width: 36px; height: 36px; border-radius: 50%;
     background: var(--blue); color: #fff; font-weight: 700;
     display: grid; place-items: center;
   }
   .steps h3 { margin-bottom: 4px; }
   .steps p { color: var(--muted); margin: 0; }
-  .prep { margin: 0; }
-  .prep img { border-radius: 8px; width: 100%; max-height: 460px; object-fit: cover; }
-  .prep figcaption { color: var(--muted); font-size: 15px; margin-top: 8px; }
 
   /* quote form */
   .quote { background: var(--card); border-top: 1px solid var(--line); }
@@ -194,10 +213,35 @@
   .hp { display: none; }
   #form-status { font-weight: 600; min-height: 1.5em; }
 
-  footer { background: var(--ink); color: #d6d6d6; padding: 32px 0; font-size: 15px; }
-  footer a { color: #fff; }
-  footer .wrap { display: grid; gap: 6px; }
-  footer strong { color: #fff; font-size: 17px; }
+  /* footer: brand, contact, links, Google badge */
+  footer { background: #1c1e22; color: #cfd2d6; font-size: 15px; }
+  .foot-grid { display: grid; gap: 32px; padding-top: 48px; padding-bottom: 48px; }
+  .foot-col h3 { color: #fff; font-size: 16px; text-transform: uppercase; letter-spacing: .6px; margin-bottom: 14px; }
+  .foot-col ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .foot-col a { color: #cfd2d6; text-decoration: none; }
+  .foot-col a:hover { color: #fff; }
+  .foot-brand .name { display: flex; align-items: center; gap: 10px; color: #fff; font-weight: 700; font-size: 18px; margin-bottom: 10px; }
+  .foot-brand .name svg { width: 44px; height: 28px; }
+  .foot-brand p { max-width: 22em; }
+  .fb {
+    display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(255,255,255,.08); color: #fff;
+    transition: transform .35s var(--bounce), background .2s;
+  }
+  .fb:hover { background: var(--blue); transform: translateY(-3px); }
+  .fb svg { width: 20px; height: 20px; }
+  .foot-ico li { display: flex; align-items: center; gap: 10px; }
+  .foot-ico svg { width: 16px; height: 16px; color: var(--sky); flex: none; }
+  .g-badge {
+    display: grid; gap: 2px; padding: 16px 18px; border-radius: 8px;
+    border: 1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.04);
+    transition: transform .35s var(--bounce), border-color .2s;
+  }
+  .g-badge:hover { transform: translateY(-3px); border-color: var(--sky); }
+  .g-badge .stars { color: #F5B82E; letter-spacing: 2px; }
+  .g-badge strong { color: #fff; font-size: 20px; }
+  .g-badge .g-link { color: var(--sky); font-weight: 600; margin-top: 6px; }
+  .foot-bottom { background: #121316; color: #9a9ea4; text-align: center; font-size: 14px; padding: 14px 16px; }
 
   @media (min-width: 760px) {
     h2 { font-size: 34px; }
@@ -210,7 +254,11 @@
     .cards { grid-template-columns: repeat(3, 1fr); }
     .ba-grid { grid-template-columns: repeat(3, 1fr); }
     .quotes { grid-template-columns: repeat(3, 1fr); }
-    .steps-grid { grid-template-columns: 1.2fr 1fr; }
+    .steps { grid-template-columns: repeat(3, 1fr); }
+    .foot-grid { grid-template-columns: 1.3fr 1fr 1fr 1.1fr; gap: 0; }
+    .foot-col { padding: 0 28px; }
+    .foot-col:first-child { padding-left: 0; }
+    .foot-col + .foot-col { border-left: 1px solid rgba(124, 192, 245, .3); }
   }
   @media (max-width: 420px) {
     .brand span { font-size: 15px; }
@@ -221,8 +269,8 @@
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    .card, .card-img img, .card-link::after, .knob { transition: none; }
-    .card:hover, .card:focus-visible, .card:hover .card-img img { transform: none; }
+    .card, .card-img img, .knob, .chip, .fb, .g-badge { transition: none; }
+    .card:hover, .card:focus-visible, .card:hover .card-img img, .chip:hover, .fb:hover, .g-badge:hover { transform: none; }
   }
 </style>
 </head>
@@ -273,35 +321,34 @@
         <div class="card-img"><img src="img/after-bedroom-pale-grey-carpet.jpg" width="959" height="719" alt="Bedroom painted pale grey with crisp white trim" loading="lazy"></div>
         <div class="card-body">
           <h3>Interior painting</h3>
-          <p>Walls, ceilings, trim and doors. One room or several.</p>
-          <span class="card-link">Get a quote</span>
-        </div>
+          <p>Walls, ceilings, trim and doors. One room or several.</p>        </div>
       </a>
       <a class="card" href="#quote">
         <div class="card-img"><img src="img/2087437938288061_frame.jpg" width="679" height="1200" alt="Empty rental unit with fresh grey walls and white trim" loading="lazy"></div>
         <div class="card-body">
           <h3>Rentals and whole houses</h3>
-          <p>Patch and repaint between tenants, or the whole house in one go.</p>
-          <span class="card-link">Get a quote</span>
-        </div>
+          <p>Patch and repaint between tenants, or the whole house in one go.</p>        </div>
       </a>
       <a class="card" href="#quote">
         <div class="card-img"><img src="img/361162426752289_frame.jpg" width="675" height="1200" alt="Flower and gift shop with freshly painted cream walls" loading="lazy"></div>
         <div class="card-body">
           <h3>Shops and cafes</h3>
-          <p>Commercial jobs finished on schedule. Recent work: a flower shop and a cafe.</p>
-          <span class="card-link">Get a quote</span>
-        </div>
+          <p>Commercial jobs finished on schedule. Recent work: a flower shop and a cafe.</p>        </div>
       </a>
     </div>
-    <p class="also">Also: garages, basements and fence staining.</p>
+    <div class="also">
+      <span class="also-label">We also paint:</span>
+      <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V9l9-6 9 6v12"/><path d="M7 21v-8h10v8M7 16h10"/></svg>Garages</span>
+      <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h5v5h5v5h5v5h3"/><path d="M3 21h18"/></svg>Basements</span>
+      <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V6l2-2 2 2v15M15 21V6l2-2 2 2v15M3 10h18M3 16h18"/></svg>Fence staining</span>
+    </div>
   </div>
 </section>
 
 <section class="ba" id="work">
   <div class="wrap">
     <h2>Before and after</h2>
-    <p class="lead">Real jobs, from our own photos. Drag the handle to compare.</p>
+    <p class="lead">Slide left/right to see the changes.</p>
     <div class="ba-grid">
       <figure class="ba-item">
         <div class="slider">
@@ -359,20 +406,14 @@
 </section>
 
 <section id="how">
-  <div class="wrap steps-grid">
-    <div>
-      <h2>How it works</h2>
-      <ol class="steps">
-        <li><h3>Call or send photos</h3><p>Tell us what needs painting. Photos of the rooms help.</p></li>
-        <li><h3>Get a price</h3><p>A fair price before the work starts.</p></li>
-        <li><h3>We show up on the day</h3><p>Floors and furniture covered, clean lines, and we leave it clean.</p></li>
-      </ol>
-      <a class="btn" href="#quote">Get a quote</a>
-    </div>
-    <figure class="prep">
-      <img src="img/hallway-masked-for-spray.jpg" width="455" height="808" alt="Hallway fully masked in plastic and paper before painting" loading="lazy">
-      <figcaption>Everything covered before the first coat.</figcaption>
-    </figure>
+  <div class="wrap">
+    <h2>How it works</h2>
+    <ol class="steps">
+      <li><h3>Call or send photos</h3><p>Tell us what needs painting. Photos of the rooms help.</p></li>
+      <li><h3>Get a price</h3><p>A fair price before the work starts.</p></li>
+      <li><h3>We show up on the day</h3><p>Floors and furniture covered, clean lines, and we leave it clean.</p></li>
+    </ol>
+    <a class="btn" href="#quote">Get a quote</a>
   </div>
 </section>
 
@@ -397,11 +438,45 @@
 </main>
 
 <footer>
-  <div class="wrap">
-    <strong>Davillion Renovations</strong>
-    <span>Painting in Edmonton and area</span>
-    <span><a href="tel:+17808935509">(780) 893-5509</a> · <a href="https://www.facebook.com/davillionrenos" target="_blank" rel="noopener">Facebook</a></span>
+  <div class="wrap foot-grid">
+    <div class="foot-col foot-brand">
+      <div class="name">
+        <svg viewBox="0 0 64 40" fill="none" stroke="#7CC0F5" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M40 14V6h6v14"/><path d="M2 30L32 6l30 24"/><path d="M12 30l12-10 12 10"/><rect x="20.5" y="25" width="7" height="6" stroke-width="3"/><path d="M6 36h52"/></svg>
+        Davillion Renovations
+      </div>
+      <p>Interior painting and fence staining in Edmonton.</p>
+      <a class="fb" href="https://www.facebook.com/davillionrenos" target="_blank" rel="noopener" aria-label="Davillion Renovations on Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 8h3V4h-3c-2.8 0-4 1.8-4 4.3V10H7v4h3v8h4v-8h3l1-4h-4V8.6c0-.4.3-.6.6-.6z"/></svg>
+      </a>
+    </div>
+    <div class="foot-col">
+      <h3>Contact</h3>
+      <ul class="foot-ico foot-links">
+        <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg><a href="tel:+17808935509">(780) 893-5509</a></li>
+        <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 8h3V4h-3c-2.8 0-4 1.8-4 4.3V10H7v4h3v8h4v-8h3l1-4h-4V8.6c0-.4.3-.6.6-.6z"/></svg><a href="https://www.facebook.com/davillionrenos" target="_blank" rel="noopener">Facebook page</a></li>
+        <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Edmonton and area</span></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h3>Quick links</h3>
+      <ul class="foot-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#work">Before and after</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#quote">Get a quote</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h3>Reviews</h3>
+      <a class="g-badge" href="https://www.google.com/maps/search/?api=1&amp;query=Davillion+Painting+Edmonton" target="_blank" rel="noopener">
+        <span class="stars" aria-hidden="true">★★★★★</span>
+        <strong>5.0 on Google</strong>
+        <span>17 reviews, all five stars</span>
+        <span class="g-link">Read them →</span>
+      </a>
+    </div>
   </div>
+  <div class="foot-bottom">© 2026 Davillion Renovations · Edmonton, Alberta</div>
 </footer>
 
 <script>
